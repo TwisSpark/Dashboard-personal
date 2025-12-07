@@ -1,0 +1,7 @@
+{
+  "heal": [
+    "Has curado a un jugador y recibiste {dinero} monedas.",
+    "Tu habilidad médica ha sido recompensada con {dinero} monedas.",
+    "Efecto curativo completado. Ganaste {dinero} monedas."
+  ]
+}

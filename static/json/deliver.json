@@ -1,0 +1,7 @@
+{
+  "deliver": [
+    "Entrega completada. Ganaste {dinero} monedas.",
+    "Has repartido paquetes y recibido {dinero} monedas.",
+    "Entrega exitosa, obtuviste {dinero} monedas."
+  ]
+}

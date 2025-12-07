@@ -1,0 +1,7 @@
+{
+  "rob": [
+    "Intentaste un robo y obtuviste {dinero} monedas.",
+    "Robaste exitosamente a un jugador y ganaste {dinero} monedas.",
+    "El robo salió bien y recibiste {dinero} monedas."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "pay": [
+    "Transferiste {dinero} monedas a otro jugador.",
+    "Pago exitoso: {dinero} monedas enviadas.",
+    "Has completado el pago de {dinero} monedas."
+  ]
+}

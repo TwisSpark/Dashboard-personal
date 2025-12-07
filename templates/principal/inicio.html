@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APY Aries API – TwisSpark</title>
+    <link rel="stylesheet" href="/static/css/principal/inicio.css">
+    <link rel="icon" href="/favicon.png" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <h1>APY Aries API – TwisSpark</h1>
+        <p>Panel web interactivo. Haz clic en los botones para probar los endpoints.</p>
+
+        <div class="buttons">
+            <button onclick="llamarEndpoint('work')">Work</button>
+            <button onclick="llamarEndpoint('rob')">Rob</button>
+            <button onclick="llamarEndpoint('crime')">Crime</button>
+            <button onclick="llamarEndpoint('heal')">Heal</button>
+            <button onclick="llamarEndpoint('pay')">Pay</button>
+            <button onclick="llamarEndpoint('deliver')">Deliver</button>
+        </div>
+
+        <div class="resp-container">
+            <h2>Respuesta:</h2>
+            <pre id="respuesta">Aquí aparecerá la respuesta...</pre>
+        </div>
+
+        <div class="info">
+            <p>También puedes usar <code>/resp/{archivo}</code> para cualquier JSON en <code>static/json/</code></p>
+        </div>
+    </div>
+
+    <script>
+        async function llamarEndpoint(endpoint) {
+            try {
+                const res = await fetch(`/${endpoint}`);
+                const data = await res.json();
+                document.getElementById("respuesta").textContent = data.respuesta;
+            } catch (e) {
+                document.getElementById("respuesta").textContent = "Error al llamar al endpoint";
+            }
+        }
+    </script>
+</body>
+</html>
