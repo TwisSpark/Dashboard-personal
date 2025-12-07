@@ -1,46 +1,174 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APY Aries API – TwisSpark</title>
+    <title>SampSpark API - TwisSpark</title>
+    <meta name="description" content="SampSpark API - Panel interactivo para comandos de SA-MP. Ejecuta acciones como work, rob, crime, heal, pay y deliver. Respuestas dinámicas desde JSON personalizable. Compatible PC y móvil.">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="/static/css/principal/inicio.css">
-    <link rel="icon" href="/favicon.png" type="image/png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>APY Aries API – TwisSpark</h1>
-        <p>Panel web interactivo. Haz clic en los botones para probar los endpoints.</p>
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title"><i class="fa-solid fa-bolt"></i> SampSpark API - TwisSpark</h1>
+            <p class="subtitle">Panel interactivo para comandos de SA-MP</p>
+        </header>
 
-        <div class="buttons">
-            <button onclick="llamarEndpoint('work')">Work</button>
-            <button onclick="llamarEndpoint('rob')">Rob</button>
-            <button onclick="llamarEndpoint('crime')">Crime</button>
-            <button onclick="llamarEndpoint('heal')">Heal</button>
-            <button onclick="llamarEndpoint('pay')">Pay</button>
-            <button onclick="llamarEndpoint('deliver')">Deliver</button>
+        <div class="main-grid">
+            <!-- Comandos Disponibles -->
+            <div class="card">
+                <h2 class="card-title"><i class="fa-solid fa-gear"></i> Comandos Disponibles</h2>
+                <div class="buttons-grid">
+                    <button class="btn" onclick="ejecutarComando('/work')"><i class="fa-solid fa-briefcase"></i> Work</button>
+                    <button class="btn" onclick="ejecutarComando('/rob')"><i class="fa-solid fa-money-bill-trend-up"></i> Rob</button>
+                    <button class="btn" onclick="ejecutarComando('/crime')"><i class="fa-solid fa-person-running"></i> Crime</button>
+                    <button class="btn" onclick="ejecutarComando('/heal')"><i class="fa-solid fa-heart-pulse"></i> Heal</button>
+                    <button class="btn" onclick="ejecutarComando('/pay')"><i class="fa-solid fa-hand-holding-dollar"></i> Pay</button>
+                    <button class="btn" onclick="ejecutarComando('/deliver')"><i class="fa-solid fa-box"></i> Deliver</button>
+                </div>
+            </div>
+
+            <!-- Respuesta Dinámica -->
+            <div class="card">
+                <h2 class="card-title"><i class="fa-solid fa-bullseye"></i> Respuesta Dinámica</h2>
+                <p class="info-text">Obtén respuestas desde JSON personalizable para cualquier comando</p>
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="archivoInput" 
+                        class="input-field" 
+                        placeholder="Nombre del archivo (ej: work, rob, crime)"
+                        value="work"
+                    >
+                    <button class="btn btn-primary" onclick="ejecutarRespDinamica()">
+                        <i class="fa-solid fa-rocket"></i> Ejecutar
+                    </button>
+                </div>
+                <p class="helper-text">
+                    Endpoint: <code>/resp/{archivo}</code>
+                </p>
+            </div>
+
+            <!-- Respuesta del Servidor -->
+            <div class="card response-card">
+                <h2 class="card-title"><i class="fa-solid fa-satellite"></i> Respuesta del Servidor</h2>
+                <pre id="respuesta" class="response-box">Esperando comando...</pre>
+                <div class="stats">
+                    <span class="stat-item">Estado: <span id="estado" class="status">⏳ Listo</span></span>
+                    <span class="stat-item">Última actualización: <span id="timestamp">---</span></span>
+                </div>
+            </div>
+
+            <!-- Información de la API -->
+            <div class="card info-card">
+                <h2 class="card-title"><i class="fa-solid fa-circle-info"></i> Información de SampSpark</h2>
+                <div class="info-content">
+                    <div class="info-item">
+                        <strong>📍 Endpoints disponibles:</strong>
+                        <ul class="endpoint-list">
+                            <li><code>/work</code> - Comando de trabajo</li>
+                            <li><code>/rob</code> - Comando de robo</li>
+                            <li><code>/crime</code> - Actividades delictivas</li>
+                            <li><code>/heal</code> - Curación / médico</li>
+                            <li><code>/pay</code> - Transferencias entre jugadores</li>
+                            <li><code>/deliver</code> - Entregas y repartos</li>
+                            <li><code>/resp/{archivo}</code> - Respuesta dinámica de JSON</li>
+                        </ul>
+                    </div>
+                    <div class="info-item">
+                        <strong>💡 Características:</strong>
+                        <ul class="feature-list">
+                            <li>Respuestas aleatorias desde JSON</li>
+                            <li>Reemplazo dinámico de valores {dinero}</li>
+                            <li>CORS habilitado para toda la web</li>
+                            <li>Compatible con tu bot de Discord </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="resp-container">
-            <h2>Respuesta:</h2>
-            <pre id="respuesta">Aquí aparecerá la respuesta...</pre>
-        </div>
-
-        <div class="info">
-            <p>También puedes usar <code>/resp/{archivo}</code> para cualquier JSON en <code>static/json/</code></p>
-        </div>
+        <!-- Footer -->
+        <footer class="footer">
+            <p> SampSpark API v4.2 - TwisSpark </p>
+        </footer>
     </div>
 
+    <!-- Scripts -->
     <script>
-        async function llamarEndpoint(endpoint) {
-            try {
-                const res = await fetch(`/${endpoint}`);
-                const data = await res.json();
-                document.getElementById("respuesta").textContent = data.respuesta;
-            } catch (e) {
-                document.getElementById("respuesta").textContent = "Error al llamar al endpoint";
+        function actualizarTimestamp() {
+            const ahora = new Date();
+            document.getElementById('timestamp').textContent = ahora.toLocaleTimeString('es-ES');
+        }
+
+        function mostrarEstado(tipo) {
+            const estadoEl = document.getElementById('estado');
+            if (tipo === 'cargando') {
+                estadoEl.textContent = '⏳ Cargando...';
+                estadoEl.className = 'status status-loading';
+            } else if (tipo === 'exito') {
+                estadoEl.textContent = '✅ Éxito';
+                estadoEl.className = 'status status-success';
+            } else if (tipo === 'error') {
+                estadoEl.textContent = '❌ Error';
+                estadoEl.className = 'status status-error';
             }
         }
+
+        async function ejecutarComando(endpoint) {
+            const respuestaEl = document.getElementById('respuesta');
+            mostrarEstado('cargando');
+            
+            try {
+                const response = await fetch(endpoint);
+                const data = await response.json();
+                
+                respuestaEl.textContent = JSON.stringify(data, null, 2);
+                respuestaEl.className = 'response-box response-success';
+                mostrarEstado('exito');
+                actualizarTimestamp();
+                
+                setTimeout(() => {
+                    respuestaEl.className = 'response-box';
+                }, 1000);
+            } catch (error) {
+                respuestaEl.textContent = `Error: ${error.message}`;
+                respuestaEl.className = 'response-box response-error';
+                mostrarEstado('error');
+                actualizarTimestamp();
+            }
+        }
+
+        async function ejecutarRespDinamica() {
+            const archivo = document.getElementById('archivoInput').value.trim();
+            if (!archivo) {
+                alert('Por favor ingresa un nombre de archivo');
+                return;
+            }
+            
+            const endpoint = `/resp/${archivo}`;
+            await ejecutarComando(endpoint);
+        }
+
+        // Ejecutar con Enter
+        document.getElementById('archivoInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                ejecutarRespDinamica();
+            }
+        });
+
+        // Animación de entrada de las cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
     </script>
 </body>
 </html>

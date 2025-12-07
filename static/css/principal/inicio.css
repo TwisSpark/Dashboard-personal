@@ -1,0 +1,500 @@
+
+/* ============================================================
+ 🌌 TWIS SPARK NEODARK THEME v4.2 - APY Aries API
+ Fondo negro dinámico + Brillos violetas + Sin resaltado blanco
+============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --primary: #8c52ff;
+    --primary-dark: #6f3fe0;
+    --primary-light: #9c66ff;
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #141414;
+    --bg-card: rgba(20, 20, 20, 0.9);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.75);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --border: rgba(140, 82, 255, 0.2);
+    --success: #10b981;
+    --error: #ef4444;
+    --warning: #f59e0b;
+    --glow: rgba(140, 82, 255, 0.4);
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(circle at top, var(--bg-primary) 0%, #000000 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: pageFadeIn 0.9s ease-out forwards;
+}
+
+/* ===== Header ===== */
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInCard 0.8s ease forwards;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.title span,
+.title {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* ===== Grid Layout ===== */
+.main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* ===== Cards ===== */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    box-shadow: 0 0 30px rgba(140, 82, 255, 0.1);
+    backdrop-filter: blur(12px);
+    transition: all 0.4s ease;
+    animation: fadeInCard 0.8s ease forwards;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 40px rgba(140, 82, 255, 0.3);
+    border-color: var(--primary);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    text-shadow: 0 0 10px var(--glow);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ===== Buttons ===== */
+.buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.btn {
+    position: relative;
+    background: var(--primary);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 0.8rem;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid var(--primary-dark);
+    box-shadow: 0 4px 15px rgba(140, 82, 255, 0.25);
+    user-select: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: "";
+    position: absolute;
+    width: 120%;
+    height: 180%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    top: -50%;
+    left: -10%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.btn:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(140, 82, 255, 0.4);
+}
+
+.btn:hover::after {
+    opacity: 1;
+}
+
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 10px rgba(140, 82, 255, 0.2);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+
+/* ===== Input Fields ===== */
+.input-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.input-field {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.6rem;
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    caret-color: var(--primary);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 12px var(--glow);
+}
+
+.input-field::placeholder {
+    color: var(--text-muted);
+}
+
+/* ===== Response Box ===== */
+.response-card {
+    grid-column: 1 / -1;
+}
+
+.response-box {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border);
+    border-radius: 0.8rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    min-height: 150px;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.response-box::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.response-box::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: 4px;
+}
+
+.response-box::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+.response-success {
+    border-color: var(--success);
+    animation: successPulse 0.6s ease;
+}
+
+.response-error {
+    border-color: var(--error);
+    animation: errorShake 0.5s ease;
+}
+
+/* ===== Stats ===== */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.stat-item {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-loading {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+}
+
+.status-success {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+}
+
+.status-error {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error);
+}
+
+/* ===== Info Card ===== */
+.info-card {
+    grid-column: 1 / -1;
+}
+
+.info-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.info-item {
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 0.8rem;
+    border: 1px solid var(--border);
+}
+
+.info-item strong {
+    color: var(--primary-light);
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.endpoint-list,
+.feature-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.endpoint-list li,
+.feature-list li {
+    padding: 0.5rem 0;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+}
+
+.endpoint-list li:last-child,
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+code {
+    background: var(--bg-primary);
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    color: var(--primary-light);
+    font-size: 0.85rem;
+}
+
+.info-text {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.helper-text {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+/* ===== Footer ===== */
+.footer {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 2rem;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    transition: color 0.3s ease;
+}
+
+.footer:hover {
+    color: var(--primary);
+}
+
+/* ===== Quitar el resaltado azul o blanco ===== */
+*:focus {
+    outline: none !important;
+}
+
+button, input, textarea, .card, .btn {
+    -webkit-tap-highlight-color: transparent;
+    -moz-outline-style: none;
+    outline: none;
+}
+
+/* ===== Selección de texto personalizada ===== */
+::selection {
+    background: rgba(140, 82, 255, 0.4);
+    color: #fff;
+}
+
+/* ===== Scroll suave ===== */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ===== Animations ===== */
+@keyframes pageFadeIn {
+    0% {
+        opacity: 0;
+        filter: blur(8px) brightness(0.8);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0) brightness(1);
+    }
+}
+
+@keyframes fadeInCard {
+    from { 
+        opacity: 0; 
+        filter: blur(6px); 
+    }
+    to { 
+        opacity: 1; 
+        filter: blur(0); 
+    }
+}
+
+@keyframes successPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+@keyframes errorShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+@keyframes softGlow {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ===== Brillo sutil al cargar ===== */
+.container::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05), transparent 40%);
+    animation: softGlow 1s ease-out;
+    z-index: -1;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .title {
+        font-size: 2rem;
+    }
+    
+    .main-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .card {
+        padding: 1.5rem;
+    }
+    
+    .buttons-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .info-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .card-title {
+        font-size: 1.2rem;
+    }
+    
+    .buttons-grid {
+        grid-template-columns: 1fr;
+    }
+}
