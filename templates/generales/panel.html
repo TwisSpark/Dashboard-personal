@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,7 +17,7 @@
             <span></span>
             <span></span>
         </button>
-        <h1 class="dashboard-title">Dashboard Control Sparkavia </h1>
+        <h1 class="dashboard-title">Sparkavia Dashboard</h1>
         <div class="user-badge">
             <span>{{ usuario }}</span>
         </div>
@@ -52,7 +53,7 @@
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M10 0C9 0 8 1 8 2v6H2c-1 0-2 1-2 2s1 2 2 2h6v6c0 1 1 2 2 2s2-1 2-2v-6h6c1 0 2-1 2-2s-1-2-2-2h-6V2c0-1-1-2-2-2z"/>
                     </svg>
-                    <span>Registrar Ataque</span>
+                    <span>Registrar Episodio</span>
                 </a>
             </li>
             <li>
@@ -61,6 +62,14 @@
                         <path d="M3 2h14c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2zm0 2v12h14V4H3zm2 2h10v2H5V6zm0 4h10v2H5v-2z"/>
                     </svg>
                     <span>Historial</span>
+                </a>
+            </li>
+            <li>
+                <a href="#estadisticas" data-section="estadisticas">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M3 3v14h14V3H3zm12 12H5V5h10v10zm-8-8h2v6H7V7zm3 2h2v4h-2V9zm3-1h2v5h-2V8z"/>
+                    </svg>
+                    <span>Estadísticas</span>
                 </a>
             </li>
             <li>
@@ -85,7 +94,7 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Inicio -->
+        <!-- Sección: Inicio -->
         <section id="inicio" class="content-section active">
             <h2 class="section-title">Panel de Control</h2>
             
@@ -98,7 +107,7 @@
                     </div>
                     <div class="stat-info">
                         <h3>{{ total_ataques }}</h3>
-                        <p>Ataques Registrados</p>
+                        <p>Episodios Registrados</p>
                     </div>
                 </div>
 
@@ -109,7 +118,7 @@
                         </svg>
                     </div>
                     <div class="stat-info">
-                        <h3>Online</h3>
+                        <h3>Activo</h3>
                         <p>Estado del Sistema</p>
                     </div>
                 </div>
@@ -138,53 +147,64 @@
                         {% if registro.lugar %}
                         <div class="attack-info"><strong>Lugar:</strong> {{ registro.lugar }}</div>
                         {% endif %}
+                        {% if registro.acompanantes %}
+                        <div class="attack-info"><strong>Acompañantes:</strong> {{ registro.acompanantes }}</div>
+                        {% endif %}
                         {% if registro.sentimientos %}
-                        <div class="attack-info"><strong>Sentimientos:</strong> {{ registro.sentimientos }}</div>
+                        <div class="attack-info"><strong>Sentimientos:</strong> {{ registro.sentimientos[:100] }}{% if registro.sentimientos|length > 100 %}...{% endif %}</div>
+                        {% endif %}
+                        {% if registro.notas %}
+                        <div class="attack-info"><strong>Notas:</strong> {{ registro.notas[:100] }}{% if registro.notas|length > 100 %}...{% endif %}</div>
                         {% endif %}
                     </div>
                     {% endfor %}
                 {% else %}
                     <div class="empty-box">
-                        <p>No hay registros aún. Comienza registrando tu primer ataque.</p>
+                        <p>No hay registros aún. Comienza registrando tu primer episodio.</p>
                     </div>
                 {% endif %}
             </div>
         </section>
 
-        <!-- Registrar Ataque -->
+        <!-- Sección: Registrar Episodio -->
         <section id="registrar" class="content-section">
-            <h2 class="section-title">Registrar Nuevo Ataque</h2>
+            <h2 class="section-title">Registrar Nuevo Episodio</h2>
             
             <form id="formRegistro" class="attack-form">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Fecha del Ataque *</label>
+                        <label>Fecha del Episodio *</label>
                         <input type="date" name="fecha" id="fecha" required>
                     </div>
                     <div class="form-group">
-                        <label>Hora del Ataque *</label>
+                        <label>Hora del Episodio *</label>
                         <input type="time" name="hora" id="hora" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Duración del Ataque *</label>
-                    <input type="text" name="duracion" placeholder="Ej: 2 minutos, 30 segundos" required>
+                    <label>Duración del Episodio *</label>
+                    <input type="text" name="duracion" placeholder="Ej: 2 minutos, 30 segundos, 1 minuto 45 segundos" required>
                 </div>
 
                 <div class="form-group">
-                    <label>¿Qué sentiste durante el ataque?</label>
-                    <textarea name="sentimientos" placeholder="Describe tus sensaciones, síntomas..."></textarea>
+                    <label>¿Qué sentiste durante el episodio?</label>
+                    <textarea name="sentimientos" placeholder="Describe tus sensaciones, síntomas, qué experimentaste..."></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>¿Dónde estabas?</label>
-                    <input type="text" name="lugar" placeholder="Ej: Casa, trabajo, parque">
+                    <input type="text" name="lugar" placeholder="Ej: Casa, trabajo, parque, calle">
                 </div>
 
                 <div class="form-group">
                     <label>¿Con quién estabas?</label>
-                    <input type="text" name="acompanantes" placeholder="Ej: Solo, con familia, amigos">
+                    <input type="text" name="acompanantes" placeholder="Ej: Solo/a, con familia, con amigos, con compañeros">
+                </div>
+
+                <div class="form-group">
+                    <label>Notas adicionales</label>
+                    <textarea name="notas" placeholder="Cualquier detalle importante que quieras recordar..."></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-submit">Guardar Registro</button>
@@ -193,7 +213,7 @@
             <div id="mensaje" class="mensaje"></div>
         </section>
 
-        <!-- Historial -->
+        <!-- Sección: Historial -->
         <section id="historial" class="content-section">
             <h2 class="section-title">Historial Completo</h2>
             <div id="historialContainer" class="attacks-grid">
@@ -201,7 +221,30 @@
             </div>
         </section>
 
-        <!-- Configuración -->
+        <!-- Sección: Estadísticas -->
+        <section id="estadisticas" class="content-section">
+            <h2 class="section-title">Estadísticas</h2>
+            <div class="config-grid">
+                <div class="card">
+                    <h3 class="text-gradient">Resumen General</h3>
+                    <p><strong>Total de episodios:</strong> {{ total_ataques }}</p>
+                    <p><strong>Usuario:</strong> {{ usuario }}</p>
+                    <p class="text-muted" style="margin-top: 1rem; font-size: 0.9rem;">Próximamente: gráficos de frecuencia, patrones y análisis detallado.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-gradient">Análisis de Patrones</h3>
+                    <p class="text-muted">Esta sección estará disponible próximamente.</p>
+                    <p class="text-muted">Podrás ver: lugares más frecuentes, horas del día, duraciones promedio y más.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-gradient">Exportar Estadísticas</h3>
+                    <p class="text-muted">Descarga tus estadísticas en formato PDF o Excel.</p>
+                    <button class="btn-secondary" disabled style="margin-top: 1rem;">Exportar (Próximamente)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Configuración -->
         <section id="configuracion" class="content-section">
             <h2 class="section-title">Configuración</h2>
             <div class="config-grid">
@@ -209,15 +252,24 @@
                     <h3 class="text-gradient">Información de Usuario</h3>
                     <p><strong>Usuario:</strong> {{ usuario }}</p>
                     <p><strong>Total de registros:</strong> {{ total_ataques }}</p>
+                    <p class="text-muted" style="margin-top: 1rem; font-size: 0.9rem;">
+                        Sparkavia Dashboard - Creado con 💜 por Twis
+                    </p>
                 </div>
                 <div class="card">
                     <h3 class="text-gradient">Exportar Datos</h3>
-                    <p class="text-muted">Próximamente podrás exportar tus registros.</p>
-                    <button class="btn-secondary" disabled>Exportar (Próximamente)</button>
+                    <p class="text-muted">Próximamente podrás exportar todos tus registros en formato PDF o Excel para compartir con tu médico.</p>
+                    <button class="btn-secondary" disabled style="margin-top: 1rem;">Exportar (Próximamente)</button>
                 </div>
                 <div class="card">
-                    <h3 class="text-gradient">Ayuda</h3>
-                    <p class="text-muted">Este dashboard te permite registrar y hacer seguimiento de tus ataques epilépticos.</p>
+                    <h3 class="text-gradient">Ayuda e Información</h3>
+                    <p class="text-muted">
+                        Este dashboard te permite registrar y hacer seguimiento de tus episodios epilépticos de manera organizada.
+                    </p>
+                    <p class="text-muted" style="margin-top: 0.8rem;">
+                        <strong>Importante:</strong> Esta herramienta no reemplaza el consejo médico profesional. 
+                        Siempre consulta con tu médico para interpretar los datos.
+                    </p>
                 </div>
             </div>
         </section>

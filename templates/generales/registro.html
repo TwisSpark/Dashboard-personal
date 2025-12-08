@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Sparkavia Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/login.css') }}">
+</head>
+<body>
+    <div class="login-wrapper">
+        <!-- Fondo animado -->
+        <div class="animated-bg">
+            <div class="gradient-circle circle-1"></div>
+            <div class="gradient-circle circle-2"></div>
+            <div class="gradient-circle circle-3"></div>
+        </div>
+
+        <!-- Contenedor principal -->
+        <div class="login-container-new" style="max-width: 520px;">
+            <!-- Logo y título -->
+            <div class="login-brand">
+                <a href="{{ url_for('index') }}" class="back-link">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 0L0 10l10 10V0z"/>
+                    </svg>
+                    Volver al inicio
+                </a>
+                
+                <div class="logo-container">
+                    <svg width="80" height="80" viewBox="0 0 50 50" class="logo-svg">
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#a875ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#8c52ff;stop-opacity:1" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <path d="M25 5 L45 25 L25 45 L5 25 Z" stroke="url(#logoGrad)" stroke-width="2" fill="none" filter="url(#glow)"/>
+                        <circle cx="25" cy="25" r="8" fill="url(#logoGrad)" filter="url(#glow)"/>
+                    </svg>
+                </div>
+                
+                <h1 class="brand-name">Crear Cuenta</h1>
+                <p class="brand-tagline">Únete a Sparkavia Dashboard</p>
+            </div>
+
+            {% if error %}
+            <div class="alert-modern alert-error">
+                <div class="alert-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                </div>
+                <div class="alert-content">
+                    <strong>Error en el registro</strong>
+                    <p>{{ error }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if success %}
+            <div class="alert-modern" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);">
+                <div class="alert-icon" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-green);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <div class="alert-content">
+                    <strong style="color: var(--accent-green);">¡Cuenta creada exitosamente!</strong>
+                    <p>{{ success }}</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a href="{{ url_for('login') }}" class="btn-login">
+                    <span>Iniciar Sesión Ahora</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </a>
+            </div>
+            {% else %}
+            <form method="POST" action="{{ url_for('registro') }}" id="formRegistro" class="login-form-new">
+                <div class="form-group-new">
+                    <label for="nombre">Nombre de usuario</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            name="nombre"
+                            id="nombre" 
+                            placeholder="Ej: JuanPerez"
+                            required
+                            autofocus
+                            minlength="3"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group-new">
+                    <label for="correo">Correo electrónico</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                        <input 
+                            type="email" 
+                            name="correo"
+                            id="correo" 
+                            placeholder="tu@email.com"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group-new">
+                    <label for="password">Contraseña</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+                        </svg>
+                        <input 
+                            type="password" 
+                            name="password"
+                            id="password" 
+                            placeholder="Mínimo 6 caracteres"
+                            required
+                            minlength="6"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group-new">
+                    <label for="password2">Confirmar contraseña</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                        <input 
+                            type="password" 
+                            name="password2"
+                            id="password2" 
+                            placeholder="Repite tu contraseña"
+                            required
+                            minlength="6"
+                        >
+                    </div>
+                </div>
+
+                <div id="passwordMatch" style="display: none; margin-bottom: 1rem; font-size: 0.9rem; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem; border: 1px solid var(--border);"></div>
+
+                <button type="submit" class="btn-login">
+                    <span>Crear Cuenta</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </button>
+            </form>
+
+            <!-- Separador -->
+            <div class="divider">
+                <span>o</span>
+            </div>
+
+            <!-- Link a login -->
+            <div class="login-footer-new">
+                <p>¿Ya tienes cuenta?</p>
+                <a href="{{ url_for('login') }}" class="link-register">
+                    Inicia sesión aquí
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Validación de contraseñas en tiempo real
+        const password = document.getElementById('password');
+        const password2 = document.getElementById('password2');
+        const matchDiv = document.getElementById('passwordMatch');
+        
+        function checkPasswords() {
+            if (password2.value === '') {
+                matchDiv.style.display = 'none';
+                return;
+            }
+            
+            matchDiv.style.display = 'block';
+            
+            if (password.value === password2.value) {
+                matchDiv.style.color = 'var(--accent-green)';
+                matchDiv.innerHTML = '✓ Las contraseñas coinciden';
+            } else {
+                matchDiv.style.color = 'var(--accent-red)';
+                matchDiv.innerHTML = '✗ Las contraseñas no coinciden';
+            }
+        }
+        
+        if (password && password2) {
+            password.addEventListener('input', checkPasswords);
+            password2.addEventListener('input', checkPasswords);
+        }
+    </script>
+</body>
+</html>

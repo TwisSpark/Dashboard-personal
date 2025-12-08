@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparkavia Dashboard - Control Personal de Epilepsia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/landing.css') }}">
+</head>
+<body>
+    <div class="landing-container">
+        <!-- Header -->
+        <header class="landing-header">
+            <div class="logo-section">
+                <svg width="50" height="50" viewBox="0 0 50 50">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#a875ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#8c52ff;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M25 5 L45 25 L25 45 L5 25 Z" stroke="url(#logoGrad)" stroke-width="2" fill="none"/>
+                    <circle cx="25" cy="25" r="8" fill="url(#logoGrad)"/>
+                </svg>
+                <h1 class="brand-title">Sparkavia Dashboard</h1>
+            </div>
+            <div class="header-actions">
+                <a href="{{ url_for('login') }}" class="btn-secondary">Iniciar Sesión</a>
+                <a href="{{ url_for('registro') }}" class="btn">Registrarse</a>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2 class="hero-title">Control Personal de Episodios Epilépticos</h2>
+                <p class="hero-subtitle">Una herramienta creada con empatía, por alguien que también vive con epilepsia</p>
+                
+                <div class="hero-description">
+                    <p>
+                        <strong>Sparkavia Dashboard</strong> es una plataforma personal creada para llevar un control 
+                        detallado de episodios epilépticos. Fue desarrollada por mí, <strong>Twis</strong>, porque yo 
+                        también tengo epilepsia y nunca encontré una herramienta realmente útil, simple y hecha con empatía.
+                    </p>
+                    
+                    <p>
+                        <strong>Sparkavia no es una web común.</strong><br>
+                        Es un sistema serio, privado y diseñado especialmente para personas que viven lo mismo que yo.
+                    </p>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="{{ url_for('registro') }}" class="btn btn-large">Crear mi cuenta gratis</a>
+                    <a href="{{ url_for('login') }}" class="btn-secondary btn-large">Ya tengo cuenta</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="floating-card">
+                    <div class="card-preview">
+                        <div class="preview-header">
+                            <div class="preview-dot"></div>
+                            <div class="preview-dot"></div>
+                            <div class="preview-dot"></div>
+                        </div>
+                        <div class="preview-content">
+                            <div class="preview-line short"></div>
+                            <div class="preview-line"></div>
+                            <div class="preview-line medium"></div>
+                            <div class="preview-box"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h3 class="section-title">¿Qué puedes registrar?</h3>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                        </svg>
+                    </div>
+                    <h4>Fecha y hora del episodio</h4>
+                    <p>Registra exactamente cuándo ocurrió</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                    </div>
+                    <h4>Duración</h4>
+                    <p>Cuánto tiempo duró el episodio</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                        </svg>
+                    </div>
+                    <h4>Qué sentiste</h4>
+                    <p>Síntomas, sensaciones y emociones</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h4>Dónde estabas</h4>
+                    <p>El lugar donde ocurrió</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                        </svg>
+                    </div>
+                    <h4>Con quién estabas</h4>
+                    <p>Solo, con familia, amigos...</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                        </svg>
+                    </div>
+                    <h4>Notas adicionales</h4>
+                    <p>Cualquier detalle importante</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Section -->
+        <section class="why-section">
+            <div class="why-content">
+                <h3 class="section-title">¿Por qué Sparkavia existe?</h3>
+                <div class="why-text">
+                    <p>
+                        Todo queda organizado en un panel visual moderno estilo <strong>NeoDark</strong>, 
+                        pensado para entender mejor tus patrones, llevar un seguimiento real y ayudarte 
+                        a tener más claridad sobre tu salud.
+                    </p>
+                    <p class="highlight-text">
+                        Sparkavia existe porque lo necesitaba yo, y sé que también puede ayudar 
+                        a otras personas como nosotros. 💜
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer CTA -->
+        <section class="footer-cta">
+            <h3>¿Listo para empezar?</h3>
+            <p>Crea tu cuenta gratuita y comienza a llevar el control de tu salud hoy mismo</p>
+            <a href="{{ url_for('registro') }}" class="btn btn-large">Crear cuenta ahora</a>
+        </section>
+
+        <!-- Footer -->
+        <footer class="landing-footer">
+            <p>Creado con 💜 por Twis • Sparkavia Dashboard {{ "2024" if "2024" in "2024" else "2025" }}</p>
+            <p class="footer-note">Esta herramienta no reemplaza el consejo médico profesional</p>
+        </footer>
+    </div>
+</body>
+</html>

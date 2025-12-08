@@ -4,6 +4,7 @@ import json
 import os
 from datetime import datetime
 from functools import wraps
+import hashlib
 
 app = Flask(__name__)
 app.secret_key = 'tu_clave_secreta_super_segura_12345'
@@ -13,23 +14,14 @@ JSON_DIR = os.path.join('static', 'json', 'generales')
 os.makedirs(JSON_DIR, exist_ok=True)
 
 REGISTROS_FILE = os.path.join(JSON_DIR, 'registros.json')
+ATAQUES_FILE = os.path.join(JSON_DIR, 'ataques.json')
 USUARIOS_FILE = os.path.join(JSON_DIR, 'usuarios.json')
 
-# Inicializar archivo JSON de registros
-if not os.path.exists(REGISTROS_FILE):
-    with open(REGISTROS_FILE, 'w', encoding='utf-8') as f:
-        json.dump([], f)
-
-# Credenciales iniciales
-USUARIOS = {
-    'admin': 'admin123',
-    'usuario': 'password123'
-}
-
-# Inicializar archivo JSON de usuarios si no existe
-if not os.path.exists(USUARIOS_FILE):
-    with open(USUARIOS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(USUARIOS, f, indent=2)
+# Inicializar archivos JSON
+for file_path in [REGISTROS_FILE, ATAQUES_FILE, USUARIOS_FILE]:
+    if not os.path.exists(file_path):
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump([], f)
 
 # Decorador de protección
 def login_required(f):
@@ -41,34 +33,42 @@ def login_required(f):
     return decorated_function
 
 # Funciones de datos
-def cargar_registros():
+def cargar_json(file_path):
     try:
-        with open(REGISTROS_FILE, 'r', encoding='utf-8') as f:
+        with open(file_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except:
         return []
 
-def guardar_registros(registros):
-    with open(REGISTROS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(registros, f, indent=2, ensure_ascii=False)
+def guardar_json(file_path, data):
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
-def cargar_usuarios():
-    try:
-        with open(USUARIOS_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except:
-        return {}
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-def guardar_usuarios(usuarios):
-    with open(USUARIOS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(usuarios, f, indent=2)
+def verificar_usuario(usuario, password):
+    usuarios = cargar_json(USUARIOS_FILE)
+    password_hash = hash_password(password)
+    for u in usuarios:
+        if u['usuario'] == usuario and u['password'] == password_hash:
+            return True
+    return False
+
+def usuario_existe(usuario):
+    usuarios = cargar_json(USUARIOS_FILE)
+    return any(u['usuario'] == usuario for u in usuarios)
+
+def correo_existe(correo):
+    usuarios = cargar_json(USUARIOS_FILE)
+    return any(u['correo'] == correo for u in usuarios)
 
 # Rutas
 @app.route('/')
 def index():
     if 'usuario' in session:
         return redirect(url_for('panel'))
-    return redirect(url_for('login'))
+    return render_template('generales/index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -78,11 +78,9 @@ def login():
         usuario = request.form.get('usuario', '').strip()
         password = request.form.get('password', '').strip()
         
-        usuarios = cargar_usuarios()
-        
         if not usuario or not password:
             error = 'Por favor completa todos los campos'
-        elif usuario in usuarios and usuarios[usuario] == password:
+        elif verificar_usuario(usuario, password):
             session['usuario'] = usuario
             return redirect(url_for('panel'))
         else:
@@ -90,15 +88,62 @@ def login():
     
     return render_template('generales/login.html', error=error)
 
+@app.route('/registro', methods=['GET', 'POST'])
+def registro():
+    error = None
+    success = None
+    
+    if request.method == 'POST':
+        nombre = request.form.get('nombre', '').strip()
+        correo = request.form.get('correo', '').strip()
+        password = request.form.get('password', '').strip()
+        password2 = request.form.get('password2', '').strip()
+        
+        # Validaciones
+        if not all([nombre, correo, password, password2]):
+            error = 'Por favor completa todos los campos'
+        elif len(nombre) < 3:
+            error = 'El nombre de usuario debe tener al menos 3 caracteres'
+        elif usuario_existe(nombre):
+            error = 'Este nombre de usuario ya está registrado'
+        elif correo_existe(correo):
+            error = 'Este correo ya está registrado'
+        elif '@' not in correo or '.' not in correo:
+            error = 'Por favor ingresa un correo válido'
+        elif len(password) < 6:
+            error = 'La contraseña debe tener al menos 6 caracteres'
+        elif password != password2:
+            error = 'Las contraseñas no coinciden'
+        else:
+            # Crear nuevo usuario
+            usuarios = cargar_json(USUARIOS_FILE)
+            nuevo_usuario = {
+                'id': datetime.now().strftime('%Y%m%d%H%M%S%f'),
+                'usuario': nombre,
+                'correo': correo,
+                'password': hash_password(password),
+                'fecha_registro': datetime.now().isoformat()
+            }
+            usuarios.append(nuevo_usuario)
+            guardar_json(USUARIOS_FILE, usuarios)
+            
+            success = 'Cuenta creada exitosamente. Ahora puedes iniciar sesión.'
+    
+    return render_template('generales/registro.html', error=error, success=success)
+
 @app.route('/panel')
 @login_required
 def panel():
-    registros = cargar_registros()
-    total_ataques = len(registros)
-    registros_recientes = sorted(registros, key=lambda x: x.get('timestamp', ''), reverse=True)[:5]
+    usuario_actual = session['usuario']
+    registros = cargar_json(REGISTROS_FILE)
+    
+    # Filtrar registros del usuario actual
+    registros_usuario = [r for r in registros if r.get('usuario') == usuario_actual]
+    total_ataques = len(registros_usuario)
+    registros_recientes = sorted(registros_usuario, key=lambda x: x.get('timestamp', ''), reverse=True)[:5]
     
     return render_template('generales/panel.html', 
-                         usuario=session['usuario'],
+                         usuario=usuario_actual,
                          total_ataques=total_ataques,
                          registros_recientes=registros_recientes)
 
@@ -112,6 +157,7 @@ def registrar_ataque():
         sentimientos = request.form.get('sentimientos', '').strip()
         lugar = request.form.get('lugar', '').strip()
         acompanantes = request.form.get('acompanantes', '').strip()
+        notas = request.form.get('notas', '').strip()
         
         if not all([fecha, hora, duracion]):
             return jsonify({'success': False, 'message': 'Fecha, hora y duración son obligatorios'}), 400
@@ -125,12 +171,13 @@ def registrar_ataque():
             'duracion': duracion,
             'sentimientos': sentimientos,
             'lugar': lugar,
-            'acompanantes': acompanantes
+            'acompanantes': acompanantes,
+            'notas': notas
         }
         
-        registros = cargar_registros()
+        registros = cargar_json(REGISTROS_FILE)
         registros.append(nuevo_registro)
-        guardar_registros(registros)
+        guardar_json(REGISTROS_FILE, registros)
         
         return jsonify({'success': True, 'message': 'Ataque registrado exitosamente'})
     
@@ -140,33 +187,17 @@ def registrar_ataque():
 @app.route('/obtener_registros')
 @login_required
 def obtener_registros():
-    registros = cargar_registros()
-    registros_recientes = sorted(registros, key=lambda x: x.get('timestamp', ''), reverse=True)[:10]
+    usuario_actual = session['usuario']
+    registros = cargar_json(REGISTROS_FILE)
+    registros_usuario = [r for r in registros if r.get('usuario') == usuario_actual]
+    registros_recientes = sorted(registros_usuario, key=lambda x: x.get('timestamp', ''), reverse=True)[:10]
     return jsonify(registros_recientes)
-
-@app.route('/registrar_usuario', methods=['POST'])
-@login_required
-def registrar_usuario():
-    nuevo_usuario = request.form.get('usuario', '').strip()
-    nueva_password = request.form.get('password', '').strip()
-
-    if not nuevo_usuario or not nueva_password:
-        return jsonify({'success': False, 'message': 'Usuario y contraseña son obligatorios'}), 400
-
-    usuarios = cargar_usuarios()
-    
-    if nuevo_usuario in usuarios:
-        return jsonify({'success': False, 'message': 'El usuario ya existe'}), 400
-
-    usuarios[nuevo_usuario] = nueva_password
-    guardar_usuarios(usuarios)
-    
-    return jsonify({'success': True, 'message': 'Usuario registrado exitosamente'})
 
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+    

@@ -1,6 +1,16 @@
+
 /* ============================================================
    PANEL DE DASHBOARD - LAYOUT Y COMPONENTES
 ============================================================ */
+
+/* Quitar outline azul */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a:focus, button:focus, input:focus {
+    outline: none;
+}
 
 body {
     padding-top: 70px;
@@ -317,31 +327,31 @@ body {
     body {
         padding-left: 0;
     }
-
+    
     .sidebar {
         transform: translateX(-100%);
     }
-
+    
     .sidebar.active {
         transform: translateX(0);
     }
-
+    
     .sidebar-footer {
         width: 280px;
     }
-
+    
     .main-content {
         margin-left: 0;
     }
-
+    
     .dashboard-header h1 {
         font-size: 1.2rem;
     }
-
+    
     .stats-grid {
         grid-template-columns: 1fr;
     }
-
+    
     .attacks-grid {
         grid-template-columns: 1fr;
     }
@@ -351,5 +361,4 @@ body {
     .sidebar-toggle {
         display: none;
     }
-}
-
+} 

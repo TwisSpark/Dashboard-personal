@@ -1,4 +1,9 @@
-{
-  "admin": "admin123",
-  "usuario": "password123"
-}
+[
+  {
+    "id": "20251208225018266053",
+    "usuario": "Twis",
+    "correo": "twisspark@gmail.com",
+    "password": "84f9c593887c20134a99b6d9e83ef1f17b845ea52eec81a0b5251f9dd88efd43",
+    "fecha_registro": "2025-12-08T22:50:18.266103"
+  }
+]
