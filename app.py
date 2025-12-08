@@ -97,6 +97,12 @@ async def deliver():
     respuesta = obtener_respuesta_aleatoria("deliver", "deliver.json")
     return {"comando": "deliver", "respuesta": respuesta}
 
+@app.get("/me")
+async def me():
+    """Endpoint de información personal/random"""
+    respuesta = obtener_respuesta_aleatoria("me", "me.json")
+    return {"comando": "me", "respuesta": respuesta}
+
 @app.get("/resp/{archivo}")
 async def respuesta_dinamica(archivo: str):
     """Endpoint dinámico para cualquier archivo JSON - Devuelve respuestas con placeholders sin reemplazar"""

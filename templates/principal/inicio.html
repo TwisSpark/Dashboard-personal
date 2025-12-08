@@ -30,6 +30,9 @@
                     <button class="btn" onclick="ejecutarComando('/heal')"><i class="fa-solid fa-heart-pulse"></i> Heal</button>
                     <button class="btn" onclick="ejecutarComando('/pay')"><i class="fa-solid fa-hand-holding-dollar"></i> Pay</button>
                     <button class="btn" onclick="ejecutarComando('/deliver')"><i class="fa-solid fa-box"></i> Deliver</button>
+
+                    <!-- Nuevo comando /me -->
+                    <button class="btn" onclick="ejecutarComando('/me')"><i class="fa-solid fa-user"></i> Me</button>
                 </div>
             </div>
 
@@ -77,6 +80,10 @@
                             <li><code>/heal</code> - Curación / médico</li>
                             <li><code>/pay</code> - Transferencias entre jugadores</li>
                             <li><code>/deliver</code> - Entregas y repartos</li>
+
+                            <!-- Nuevo endpoint /me -->
+                            <li><code>/me</code> - Perfil / información del jugador</li>
+
                             <li><code>/resp/{archivo}</code> - Respuesta dinámica de JSON</li>
                         </ul>
                     </div>
@@ -86,7 +93,7 @@
                             <li>Respuestas aleatorias desde JSON</li>
                             <li>Reemplazo dinámico de valores {dinero}</li>
                             <li>CORS habilitado para toda la web</li>
-                            <li>Compatible con tu bot de Discord </li>
+                            <li>Compatible con PC, móvil y Replit</li>
                         </ul>
                     </div>
                 </div>
