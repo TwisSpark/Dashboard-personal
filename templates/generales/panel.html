@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel - Dashboard Epilepsia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/panel.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="dashboard-header">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1 class="dashboard-title">Dashboard Control Epilepsia</h1>
+        <div class="user-badge">
+            <span>{{ usuario }}</span>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <svg width="50" height="50" viewBox="0 0 50 50">
+                <defs>
+                    <linearGradient id="sidebarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#a875ff;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#8c52ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M25 5 L45 25 L25 45 L5 25 Z" stroke="url(#sidebarGradient)" stroke-width="2" fill="none"/>
+                <circle cx="25" cy="25" r="8" fill="url(#sidebarGradient)"/>
+            </svg>
+            <h2>Menú</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="#inicio" data-section="inicio">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 3L2 9v9h6v-5h4v5h6V9l-8-6z"/>
+                    </svg>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="#registrar" data-section="registrar">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 0C9 0 8 1 8 2v6H2c-1 0-2 1-2 2s1 2 2 2h6v6c0 1 1 2 2 2s2-1 2-2v-6h6c1 0 2-1 2-2s-1-2-2-2h-6V2c0-1-1-2-2-2z"/>
+                    </svg>
+                    <span>Registrar Ataque</span>
+                </a>
+            </li>
+            <li>
+                <a href="#historial" data-section="historial">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M3 2h14c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2zm0 2v12h14V4H3zm2 2h10v2H5V6zm0 4h10v2H5v-2z"/>
+                    </svg>
+                    <span>Historial</span>
+                </a>
+            </li>
+            <li>
+                <a href="#configuracion" data-section="configuracion">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.43 10.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C12.46.29 12.25.03 12 .03h-4c-.25 0-.46.26-.49.49l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.23.24.49.49.49h4c.25 0 .46-.26.49-.49l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM10 13c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/>
+                    </svg>
+                    <span>Configuración</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M3 3h8v2H5v10h6v2H3V3zm10 4l5 3-5 3v-2H7V9h6V7z"/>
+                </svg>
+                <span>Cerrar Sesión</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Inicio -->
+        <section id="inicio" class="content-section active">
+            <h2 class="section-title">Panel de Control</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card purple">
+                    <div class="stat-icon">
+                        <svg width="30" height="30" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 0a10 10 0 110 20 10 10 0 010-20zm0 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v2h2v-2zm0-8H9v6h2V5z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{ total_ataques }}</h3>
+                        <p>Ataques Registrados</p>
+                    </div>
+                </div>
+
+                <div class="stat-card green">
+                    <div class="stat-icon">
+                        <svg width="30" height="30" viewBox="0 0 20 20" fill="currentColor">
+                            <circle cx="10" cy="10" r="8" />
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Online</h3>
+                        <p>Estado del Sistema</p>
+                    </div>
+                </div>
+
+                <div class="stat-card blue">
+                    <div class="stat-icon">
+                        <svg width="30" height="30" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 0a10 10 0 110 20 10 10 0 010-20zm0 5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>{{ usuario }}</h3>
+                        <p>Usuario Activo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registros Recientes -->
+            <h3 class="subsection-title">Registros Recientes</h3>
+            <div class="attacks-grid" id="recentGrid">
+                {% if registros_recientes %}
+                    {% for registro in registros_recientes %}
+                    <div class="attack-card">
+                        <div class="attack-date">{{ registro.fecha }} - {{ registro.hora }}</div>
+                        <div class="attack-info"><strong>Duración:</strong> {{ registro.duracion }}</div>
+                        {% if registro.lugar %}
+                        <div class="attack-info"><strong>Lugar:</strong> {{ registro.lugar }}</div>
+                        {% endif %}
+                        {% if registro.sentimientos %}
+                        <div class="attack-info"><strong>Sentimientos:</strong> {{ registro.sentimientos }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-box">
+                        <p>No hay registros aún. Comienza registrando tu primer ataque.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Registrar Ataque -->
+        <section id="registrar" class="content-section">
+            <h2 class="section-title">Registrar Nuevo Ataque</h2>
+            
+            <form id="formRegistro" class="attack-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Fecha del Ataque *</label>
+                        <input type="date" name="fecha" id="fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora del Ataque *</label>
+                        <input type="time" name="hora" id="hora" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Duración del Ataque *</label>
+                    <input type="text" name="duracion" placeholder="Ej: 2 minutos, 30 segundos" required>
+                </div>
+
+                <div class="form-group">
+                    <label>¿Qué sentiste durante el ataque?</label>
+                    <textarea name="sentimientos" placeholder="Describe tus sensaciones, síntomas..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>¿Dónde estabas?</label>
+                    <input type="text" name="lugar" placeholder="Ej: Casa, trabajo, parque">
+                </div>
+
+                <div class="form-group">
+                    <label>¿Con quién estabas?</label>
+                    <input type="text" name="acompanantes" placeholder="Ej: Solo, con familia, amigos">
+                </div>
+
+                <button type="submit" class="btn btn-submit">Guardar Registro</button>
+            </form>
+
+            <div id="mensaje" class="mensaje"></div>
+        </section>
+
+        <!-- Historial -->
+        <section id="historial" class="content-section">
+            <h2 class="section-title">Historial Completo</h2>
+            <div id="historialContainer" class="attacks-grid">
+                <p class="loading">Cargando historial...</p>
+            </div>
+        </section>
+
+        <!-- Configuración -->
+        <section id="configuracion" class="content-section">
+            <h2 class="section-title">Configuración</h2>
+            <div class="config-grid">
+                <div class="card">
+                    <h3 class="text-gradient">Información de Usuario</h3>
+                    <p><strong>Usuario:</strong> {{ usuario }}</p>
+                    <p><strong>Total de registros:</strong> {{ total_ataques }}</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-gradient">Exportar Datos</h3>
+                    <p class="text-muted">Próximamente podrás exportar tus registros.</p>
+                    <button class="btn-secondary" disabled>Exportar (Próximamente)</button>
+                </div>
+                <div class="card">
+                    <h3 class="text-gradient">Ayuda</h3>
+                    <p class="text-muted">Este dashboard te permite registrar y hacer seguimiento de tus ataques epilépticos.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/generales/panel.js') }}"></script>
+</body>
+</html>

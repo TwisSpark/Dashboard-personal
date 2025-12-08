@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Dashboard Epilepsia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/neodark.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <svg width="70" height="70" viewBox="0 0 50 50" style="margin-bottom: 1rem;">
+                <defs>
+                    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#a875ff;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#8c52ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M25 5 L45 25 L25 45 L5 25 Z" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
+                <circle cx="25" cy="25" r="8" fill="url(#logoGradient)"/>
+            </svg>
+        </div>
+
+        <h1 class="login-title">Dashboard Epilepsia</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Accede a tu panel de control</p>
+
+        {% if error %}
+        <div class="alert alert-error">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm1 15H9v-2h2v2zm0-4H9V5h2v6z"/>
+            </svg>
+            <span>{{ error }}</span>
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <input 
+                type="text" 
+                name="usuario" 
+                class="login-input" 
+                placeholder="Usuario"
+                required
+                autofocus
+            >
+
+            <input 
+                type="password" 
+                name="password" 
+                class="login-input" 
+                placeholder="Contraseña"
+                required
+            >
+
+            <button type="submit" class="btn" style="width: 100%;">
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+            <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; line-height: 1.8;">
+                <strong style="color: var(--text-secondary);">Credenciales de prueba:</strong><br>
+                Usuario: <code style="background: var(--bg-tertiary); padding: 0.2rem 0.5rem; border-radius: 0.3rem; color: var(--primary-light);">admin</code> / 
+                Contraseña: <code style="background: var(--bg-tertiary); padding: 0.2rem 0.5rem; border-radius: 0.3rem; color: var(--primary-light);">admin123</code><br>
+                Usuario: <code style="background: var(--bg-tertiary); padding: 0.2rem 0.5rem; border-radius: 0.3rem; color: var(--primary-light);">usuario</code> / 
+                Contraseña: <code style="background: var(--bg-tertiary); padding: 0.2rem 0.5rem; border-radius: 0.3rem; color: var(--primary-light);">password123</code>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
