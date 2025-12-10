@@ -489,10 +489,11 @@ def perfil():
                 success = 'Nombre de usuario actualizado correctamente'
         
         # Validar cambio de correo
-        if nuevo_correo and nuevo_correo.lower() != info_usuario.get('correo', '').lower():
+        correo_actual = info_usuario.get('correo', '') if info_usuario else ''
+        if nuevo_correo and nuevo_correo.lower() != correo_actual.lower():
             if '@' not in nuevo_correo or '.' not in nuevo_correo:
                 error = 'Por favor ingresa un correo válido'
-            elif correo_existe(nuevo_correo) and nuevo_correo.lower() != info_usuario.get('correo', '').lower():
+            elif correo_existe(nuevo_correo) and nuevo_correo.lower() != correo_actual.lower():
                 error = 'Este correo ya está registrado'
             else:
                 for u in usuarios:
@@ -539,7 +540,7 @@ def subir_avatar():
         
         file = request.files['avatar']
         
-        if file.filename == '':
+        if not file.filename or file.filename == '':
             return jsonify({'success': False, 'message': 'No se seleccionó ningún archivo'}), 400
         
         if not allowed_file(file.filename):
@@ -554,7 +555,8 @@ def subir_avatar():
             return jsonify({'success': False, 'message': 'La imagen es muy grande. Máximo 5MB'}), 400
         
         # Convertir a base64
-        extension = file.filename.rsplit('.', 1)[1].lower()
+        filename = file.filename
+        extension = filename.rsplit('.', 1)[1].lower()
         base64_data = base64.b64encode(file_data).decode('utf-8')
         avatar_data = f"data:image/{extension};base64,{base64_data}"
         
