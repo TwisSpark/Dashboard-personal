@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparkavia Premium - Apoya el Proyecto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/neodark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/premium.css') }}">
+</head>
+<body>
+    <div class="premium-container">
+        <a href="{{ url_for('panel') }}" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+            Volver al Panel
+        </a>
+
+        <div class="premium-hero">
+            <div class="premium-badge-large">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </div>
+            <h1>Sparkavia Premium</h1>
+            <p class="premium-subtitle">Apoya el proyecto y desbloquea funcionalidades exclusivas</p>
+        </div>
+
+        {% if info_usuario.premium %}
+        <div class="premium-active">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <h2>¡Ya eres Premium! 🎉</h2>
+            <p>Gracias por apoyar Sparkavia Dashboard</p>
+            <p class="premium-since">Premium desde: {{ info_usuario.fecha_premium[:10] if info_usuario.fecha_premium else 'N/A' }}</p>
+        </div>
+        {% else %}
+        <div class="premium-pricing">
+            <div class="price-card">
+                <div class="price-header">
+                    <h3>Plan Premium</h3>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">5</span>
+                        <span class="period">/mes</span>
+                    </div>
+                </div>
+                
+                <div class="features-list">
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Registros ilimitados</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Gráficos y estadísticas avanzadas</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Exportar a PDF y Excel</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Campos personalizados</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Badge Premium en tu perfil</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Soporte prioritario</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Acceso anticipado a nuevas funciones</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Ayudas a mantener el proyecto vivo 💜</span>
+                    </div>
+                </div>
+                
+                <button class="btn-premium" id="activarPremium">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    Activar Premium Ahora
+                </button>
+                
+                <p class="payment-note">
+                    Demo: Haz clic para activar Premium de forma instantánea<br>
+                    <small>En producción se integrará con Stripe/PayPal para pagos reales</small>
+                </p>
+            </div>
+        </div>
+        
+        <div class="premium-why">
+            <h2>¿Por qué apoyar Sparkavia?</h2>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">💜</div>
+                    <h4>Creado con empatía</h4>
+                    <p>Desarrollado por alguien que también vive con epilepsia y entiende las necesidades reales.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🚀</div>
+                    <h4>Mejoras constantes</h4>
+                    <p>Tu apoyo permite agregar más funcionalidades y mantener el servicio en línea.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🔒</div>
+                    <h4>Privacidad garantizada</h4>
+                    <p>Tus datos médicos son privados y nunca se compartirán con terceros.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">🌟</div>
+                    <h4>Comunidad</h4>
+                    <p>Formas parte de una comunidad que se apoya mutuamente.</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/generales/premium.js') }}"></script>
+</body>
+</html>

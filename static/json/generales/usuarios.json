@@ -4,13 +4,19 @@
     "usuario": "Twis",
     "correo": "twisspark@gmail.com",
     "password": "84f9c593887c20134a99b6d9e83ef1f17b845ea52eec81a0b5251f9dd88efd43",
-    "fecha_registro": "2025-12-08T22:50:18.266103"
+    "fecha_registro": "2025-12-08T22:50:18.266103",
+    "ultimo_acceso": "2025-12-10T07:38:07.556729",
+    "premium": true,
+    "fecha_premium": "2025-12-10T07:12:01.555358"
   },
   {
     "id": "20251210044522125649",
     "usuario": "Twis01",
     "correo": "apycommunity@gmail.com",
     "password": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414",
-    "fecha_registro": "2025-12-10T04:45:22.125696"
+    "fecha_registro": "2025-12-10T04:45:22.125696",
+    "ultimo_acceso": "2025-12-10T07:34:23.844023",
+    "premium": true,
+    "fecha_premium": "2025-12-10T07:18:22.024451"
   }
 ]

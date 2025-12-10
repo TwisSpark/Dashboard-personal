@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "id": "20251210073805892612",
+    "timestamp": "2025-12-10T07:38:05.892633",
+    "usuario": "Twis",
+    "fecha": "2025-12-10",
+    "hora": "23:37",
+    "duracion": "J",
+    "sentimientos": "J",
+    "lugar": "J",
+    "acompanantes": "J",
+    "notas": "B",
+    "tipo_crisis": "",
+    "severidad": "",
+    "desencadenante": "",
+    "actividad_previa": "",
+    "medicacion_tomada": "",
+    "aura": "",
+    "tiempo_recuperacion": ""
+  }
+]
