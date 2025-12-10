@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import json
 import os
@@ -140,7 +139,13 @@ def panel():
     # Filtrar registros del usuario actual
     registros_usuario = [r for r in registros if r.get('usuario') == usuario_actual]
     total_ataques = len(registros_usuario)
-    registros_recientes = sorted(registros_usuario, key=lambda x: x.get('timestamp', ''), reverse=True)[:5]
+    
+    # Ordenar por timestamp y tomar solo los últimos 5
+    registros_recientes = sorted(
+        registros_usuario, 
+        key=lambda x: x.get('timestamp', ''), 
+        reverse=True
+    )[:5]  # 👈 Solo los últimos 5
     
     return render_template('generales/panel.html', 
                          usuario=usuario_actual,
