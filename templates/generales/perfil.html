@@ -1,386 +1,172 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel - Sparkavia Dashboard</title>
+    <title>Mi Perfil - Sparkavia Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global/neodark.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/neodark.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/panel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generales/perfil.css') }}">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="dashboard-header">
-        <button class="sidebar-toggle" id="sidebarToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <h1 class="dashboard-title">Sparkavia Dashboard</h1>
-        <div class="user-badge" style="cursor: pointer;" onclick="window.location.href='{{ url_for('perfil') }}'">
-            {% if info_usuario and info_usuario.avatar %}
-            <img src="{{ info_usuario.avatar }}" alt="Avatar" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; margin-right: 0.5rem;">
-            {% endif %}
-            <span>{{ usuario }}</span>
-            {% if es_premium %}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffd700" style="margin-left: 0.3rem;">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        <a href="{{ url_for('panel') }}" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
             </svg>
-            {% endif %}
+            Volver al Panel
+        </a>
+        <h1 class="dashboard-title">Mi Perfil</h1>
+        <div class="user-badge">
+            <span>{{ info_usuario.usuario }}</span>
         </div>
     </nav>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <svg width="50" height="50" viewBox="0 0 50 50">
-                <defs>
-                    <linearGradient id="sidebarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#a875ff;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#8c52ff;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <path d="M25 5 L45 25 L25 45 L5 25 Z" stroke="url(#sidebarGradient)" stroke-width="2" fill="none"/>
-                <circle cx="25" cy="25" r="8" fill="url(#sidebarGradient)"/>
-            </svg>
-            <h2>Menú</h2>
-        </div>
+    <main class="main-content" style="margin-left: 0;">
+        <div class="perfil-container">
+            <!-- Avatar Section -->
+            <div class="avatar-section">
+                <div class="avatar-wrapper">
+                    {% if info_usuario.avatar %}
+                    <img src="{{ info_usuario.avatar }}" alt="Avatar" class="avatar-img" id="avatarPreview">
+                    {% else %}
+                    <div class="avatar-placeholder" id="avatarPreview">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    
+                    {% if info_usuario.premium %}
+                    <div class="premium-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        PREMIUM
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="avatar-actions">
+                    <label for="avatarInput" class="btn-avatar">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                        Cambiar Avatar
+                    </label>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                    
+                    {% if info_usuario.avatar %}
+                    <button class="btn-avatar-delete" id="deleteAvatar">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                        Eliminar
+                    </button>
+                    {% endif %}
+                </div>
+                
+                <p class="avatar-hint">Formatos: JPG, PNG, GIF (Máx. 5MB)</p>
+            </div>
 
-        <ul class="sidebar-menu">
-            <li class="active">
-                <a href="#inicio" data-section="inicio">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10 3L2 9v9h6v-5h4v5h6V9l-8-6z"/>
-                    </svg>
-                    <span>Inicio</span>
-                </a>
-            </li>
-            <li>
-                <a href="#registrar" data-section="registrar">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10 0C9 0 8 1 8 2v6H2c-1 0-2 1-2 2s1 2 2 2h6v6c0 1 1 2 2 2s2-1 2-2v-6h6c1 0 2-1 2-2s-1-2-2-2h-6V2c0-1-1-2-2-2z"/>
-                    </svg>
-                    <span>Registrar Episodio</span>
-                </a>
-            </li>
-            <li>
-                <a href="#historial" data-section="historial">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M3 2h14c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2zm0 2v12h14V4H3zm2 2h10v2H5V6zm0 4h10v2H5v-2z"/>
-                    </svg>
-                    <span>Historial</span>
-                </a>
-            </li>
-            <li>
-                <a href="#estadisticas" data-section="estadisticas">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M3 3v14h14V3H3zm12 12H5V5h10v10zm-8-8h2v6H7V7zm3 2h2v4h-2V9zm3-1h2v5h-2V8z"/>
-                    </svg>
-                    <span>Estadísticas</span>
-                </a>
-            </li>
-            <li>
-                <a href="#configuracion" data-section="configuracion">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M17.43 10.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C12.46.29 12.25.03 12 .03h-4c-.25 0-.46.26-.49.49l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.23.24.49.49.49h4c.25 0 .46-.26.49-.49l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM10 13c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/>
-                    </svg>
-                    <span>Configuración</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ url_for('perfil') }}">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                    <span>Mi Perfil</span>
-                </a>
-            </li>
-        </ul>
-
-        <div class="sidebar-footer">
-            <a href="{{ url_for('logout') }}" class="logout-btn">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M3 3h8v2H5v10h6v2H3V3zm10 4l5 3-5 3v-2H7V9h6V7z"/>
+            <!-- Alerts -->
+            {% if error %}
+            <div class="alert alert-error">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                 </svg>
-                <span>Cerrar Sesión</span>
-            </a>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Sección: Inicio -->
-        <section id="inicio" class="content-section active">
-            <h2 class="section-title">Panel de Control</h2>
+                {{ error }}
+            </div>
+            {% endif %}
             
-            <div class="stats-grid">
-                <div class="stat-card purple">
-                    <div class="stat-icon">
-                        <svg width="30" height="30" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10 0a10 10 0 110 20 10 10 0 010-20zm0 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v2h2v-2zm0-8H9v6h2V5z"/>
-                        </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ total_ataques }}</h3>
-                        <p>Episodios Registrados</p>
-                    </div>
-                </div>
-
-                <div class="stat-card green">
-                    <div class="stat-icon">
-                        <svg width="30" height="30" viewBox="0 0 20 20" fill="currentColor">
-                            <circle cx="10" cy="10" r="8" />
-                        </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Activo</h3>
-                        <p>Estado del Sistema</p>
-                    </div>
-                </div>
-
-                <div class="stat-card blue">
-                    <div class="stat-icon">
-                        <svg width="30" height="30" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10 0a10 10 0 110 20 10 10 0 010-20zm0 5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"/>
-                        </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ usuario }}</h3>
-                        <p>Usuario Activo</p>
-                    </div>
-                </div>
+            {% if success %}
+            <div class="alert alert-success">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                {{ success }}
             </div>
+            {% endif %}
 
-            <!-- Registros Recientes -->
-            <div class="recent-section">
-                <div class="recent-header">
-                    <h3 class="subsection-title">Registros Recientes</h3>
-                    <span class="recent-count">
-                        Últimos {{ registros_recientes|length }} de {{ total_ataques }}
-                    </span>
-                </div>
-                <div class="attacks-grid">
-                    {% if registros_recientes %}
-                        {% for registro in registros_recientes %}
-                        <div class="attack-card">
-                            <div class="attack-date">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-                                </svg>
-                                {{ registro.fecha }} - {{ registro.hora }}
-                            </div>
-                            
-                            <div class="attack-info">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                                </svg>
-                                <span><strong>Duración:</strong> {{ registro.duracion }}</span>
-                            </div>
-                            
-                            {% if registro.lugar %}
-                            <div class="attack-info">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                                </svg>
-                                <span><strong>Lugar:</strong> {{ registro.lugar }}</span>
-                            </div>
-                            {% endif %}
-                            
-                            {% if registro.acompanantes %}
-                            <div class="attack-info">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-                                </svg>
-                                <span><strong>Acompañantes:</strong> {{ registro.acompanantes }}</span>
-                            </div>
-                            {% endif %}
-                            
-                            {% if registro.sentimientos %}
-                            <div class="attack-info">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-                                </svg>
-                                <span><strong>Sentimientos:</strong> {{ registro.sentimientos[:100] }}{% if registro.sentimientos|length > 100 %}...{% endif %}</span>
-                            </div>
-                            {% endif %}
-                            
-                            {% if registro.notas %}
-                            <div class="attack-info">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                                </svg>
-                                <span><strong>Notas:</strong> {{ registro.notas[:100] }}{% if registro.notas|length > 100 %}...{% endif %}</span>
-                            </div>
-                            {% endif %}
+            <div id="avatarMessage" class="mensaje"></div>
+
+            <!-- Form Sections -->
+            <div class="perfil-grid">
+                <!-- Información Personal -->
+                <div class="perfil-card">
+                    <h3>Información Personal</h3>
+                    <form method="POST" class="perfil-form">
+                        <div class="form-group">
+                            <label>Nombre de Usuario</label>
+                            <input type="text" name="nombre" value="{{ info_usuario.usuario }}" minlength="3" maxlength="20">
                         </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="empty-box">
-                            <p>No hay registros aún. Comienza registrando tu primer episodio.</p>
+                        
+                        <div class="form-group">
+                            <label>Correo Electrónico</label>
+                            <input type="email" name="correo" value="{{ info_usuario.correo }}">
                         </div>
-                    {% endif %}
-                </div>
-                
-                {% if total_ataques > 5 %}
-                <div style="text-align: center; margin-top: 2rem;">
-                    <a href="#historial" data-section="historial" class="view-all-btn">
-                        Ver todos los {{ total_ataques }} registros
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
-                    </a>
-                </div>
-                {% endif %}
-            </div>
-        </section>
-
-        <!-- Sección: Registrar Episodio -->
-        <section id="registrar" class="content-section">
-            <h2 class="section-title">Registrar Nuevo Episodio</h2>
-            
-            <form id="formRegistro" class="attack-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Fecha del Episodio *</label>
-                        <input type="date" name="fecha" id="fecha" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Hora del Episodio *</label>
-                        <input type="time" name="hora" id="hora" required>
-                    </div>
+                        
+                        <button type="submit" class="btn">Guardar Cambios</button>
+                    </form>
                 </div>
 
-                <div class="form-group">
-                    <label>Duración del Episodio *</label>
-                    <input type="text" name="duracion" placeholder="Ej: 2 minutos, 30 segundos, 1 minuto 45 segundos" required>
+                <!-- Cambiar Contraseña -->
+                <div class="perfil-card">
+                    <h3>Cambiar Contraseña</h3>
+                    <form method="POST" class="perfil-form">
+                        <div class="form-group">
+                            <label>Contraseña Actual</label>
+                            <input type="password" name="password_actual" placeholder="Ingresa tu contraseña actual">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Nueva Contraseña</label>
+                            <input type="password" name="nueva_password" placeholder="Mínimo 6 caracteres" minlength="6">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Confirmar Nueva Contraseña</label>
+                            <input type="password" name="confirmar_password" placeholder="Repite la nueva contraseña">
+                        </div>
+                        
+                        <button type="submit" class="btn">Actualizar Contraseña</button>
+                    </form>
                 </div>
 
-                <div class="form-group">
-                    <label>¿Qué sentiste durante el episodio?</label>
-                    <textarea name="Sentimientos" placeholder="Describe tus sensaciones, síntomas, qué experimentaste..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>¿Dónde estabas?</label>
-                    <input type="text" name="lugar" placeholder="Ej: Casa, trabajo, parque, calle">
-                </div>
-
-                <div class="form-group">
-                    <label>¿Con quién estabas?</label>
-                    <input type="text" name="acompanantes" placeholder="Ej: Solo/a, con familia, con amigos, con compañeros">
-                </div>
-
-                <div class="form-group">
-                    <label>Notas adicionales</label>
-                    <textarea name="notas" placeholder="Cualquier detalle importante que quieras recordar..."></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-submit">Guardar Registro</button>
-            </form>
-
-            <div id="mensaje" class="mensaje"></div>
-        </section>
-
-        <!-- Sección: Historial -->
-        <section id="historial" class="content-section">
-            <h2 class="section-title">Historial Completo</h2>
-            <div id="historialContainer" class="attacks-grid">
-                <p class="loading">Cargando historial...</p>
-            </div>
-        </section>
-
-        <!-- Sección: Estadísticas -->
-        <section id="estadisticas" class="content-section">
-            <h2 class="section-title">Estadísticas</h2>
-            <div class="config-grid">
-                <div class="card">
-                    <h3 class="text-gradient">Resumen General</h3>
-                    <p><strong>Total de episodios:</strong> {{ total_ataques }}</p>
-                    <p><strong>Usuario:</strong> {{ usuario }}</p>
-                    <p class="text-muted" style="margin-top: 1rem; font-size: 0.9rem;">Próximamente: gráficos de frecuencia, patrones y análisis detallado.</p>
-                </div>
-                <div class="card">
-                    <h3 class="text-gradient">Análisis de Patrones</h3>
-                    <p class="text-muted">Esta sección estará disponible próximamente.</p>
-                    <p class="text-muted">Podrás ver: lugares más frecuentes, horas del día, duraciones promedio y más.</p>
-                </div>
-                <div class="card">
-                    <h3 class="text-gradient">Exportar Estadísticas</h3>
-                    <p class="text-muted">Descarga tus estadísticas en formato PDF o Excel.</p>
-                    <button class="btn-secondary" disabled style="margin-top: 1rem;">Exportar (Próximamente)</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección: Configuración -->
-        <section id="configuracion" class="content-section">
-            <h2 class="section-title">Configuración</h2>
-            <div class="config-grid">
-                <div class="card">
-                    <h3 class="text-gradient">Información de Usuario</h3>
-                    <p><strong>Usuario:</strong> {{ usuario }}</p>
-                    <p><strong>Total de registros:</strong> {{ total_ataques }}</p>
-                    {% if info_usuario %}
-                    <p><strong>Correo:</strong> {{ info_usuario.correo }}</p>
-                    <p><strong>Estado:</strong> 
-                        {% if es_premium %}
-                        <span style="color: #ffd700; font-weight: 700;">✨ Premium</span>
-                        {% else %}
-                        <span style="color: var(--text-secondary);">Gratis</span>
+                <!-- Info de Cuenta -->
+                <div class="perfil-card">
+                    <h3>Información de Cuenta</h3>
+                    <div class="info-list">
+                        <div class="info-item">
+                            <span class="info-label">Estado:</span>
+                            <span class="info-value">
+                                {% if info_usuario.premium %}
+                                <span class="badge-premium">✨ Premium</span>
+                                {% else %}
+                                <span class="badge-free">Gratis</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Miembro desde:</span>
+                            <span class="info-value">{{ info_usuario.fecha_registro[:10] }}</span>
+                        </div>
+                        {% if not info_usuario.premium %}
+                        <a href="{{ url_for('premium') }}" class="btn-upgrade">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            Actualizar a Premium
+                        </a>
                         {% endif %}
-                    </p>
-                    {% endif %}
-                    <a href="{{ url_for('perfil') }}" class="btn" style="margin-top: 1rem; display: inline-block; text-decoration: none;">
-                        Editar Perfil
-                    </a>
-                </div>
-                
-                {% if not es_premium %}
-                <div class="card" style="border: 2px solid #ffd700;">
-                    <h3 class="text-gradient">🌟 Actualizar a Premium</h3>
-                    <p class="text-muted">Desbloquea todas las funcionalidades y ayuda a mantener Sparkavia en línea.</p>
-                    <ul style="margin: 1rem 0; color: var(--text-secondary); font-size: 0.9rem;">
-                        <li>✓ Gráficos avanzados</li>
-                        <li>✓ Exportar a PDF/Excel</li>
-                        <li>✓ Campos personalizados</li>
-                        <li>✓ Soporte prioritario</li>
-                    </ul>
-                    <a href="{{ url_for('premium') }}" class="btn" style="margin-top: 1rem; display: inline-block; text-decoration: none; background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000;">
-                        Ver Premium
-                    </a>
-                </div>
-                {% endif %}
-                
-                <div class="card">
-                    <h3 class="text-gradient">Exportar Datos</h3>
-                    {% if es_premium %}
-                    <p class="text-muted">Descarga todos tus registros en el formato que prefieras.</p>
-                    <button class="btn-secondary" style="margin-top: 1rem;">Exportar a PDF</button>
-                    <button class="btn-secondary" style="margin-top: 0.5rem;">Exportar a Excel</button>
-                    {% else %}
-                    <p class="text-muted">La función de exportación está disponible para usuarios Premium.</p>
-                    <button class="btn-secondary" disabled style="margin-top: 1rem;">Exportar (Premium)</button>
-                    {% endif %}
-                </div>
-                
-                <div class="card">
-                    <h3 class="text-gradient">Ayuda e Información</h3>
-                    <p class="text-muted">
-                        Este dashboard te permite registrar y hacer seguimiento de tus episodios epilépticos de manera organizada.
-                    </p>
-                    <p class="text-muted" style="margin-top: 0.8rem;">
-                        <strong>Importante:</strong> Esta herramienta no reemplaza el consejo médico profesional. 
-                        Siempre consulta con tu médico para interpretar los datos.
-                    </p>
-                    <p class="text-muted" style="margin-top: 1rem; font-size: 0.85rem; padding-top: 1rem; border-top: 1px solid var(--border);">
-                        Sparkavia Dashboard - Creado con 💜 por Twis
-                    </p>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
-    <script src="{{ url_for('static', filename='js/generales/panel.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/generales/perfil.js') }}"></script>
 </body>
 </html>
