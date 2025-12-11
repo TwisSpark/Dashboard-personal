@@ -283,3 +283,9 @@ button[type="submit"]:active {
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }
 .mt-4 { margin-top: 2rem; }
+
+/* Quitar línea de los links tipo botón */
+a.btn,
+.btn {
+    text-decoration: none !important;
+}
